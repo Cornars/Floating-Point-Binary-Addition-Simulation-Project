@@ -22,12 +22,6 @@ def main():
     string_binary_input1 = get_binary_input()
     string_binary_input2 = get_binary_input()
 
-    normalized1, exponent1 = normalize_binary(string_binary_input1)
-    normalized2, exponent2 = normalize_binary(string_binary_input2)
-
-    print(normalized1, exponent1)
-    print(normalized2, exponent2)
-
 
 if __name__ == "__main__":
     main()
