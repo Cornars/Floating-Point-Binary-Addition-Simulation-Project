@@ -41,6 +41,30 @@ def binary_addition(num1, num2):
     result = int_part_sum + '.' + frac_part_sum
     return result
 
+def transform_to_GRS(normalized_binary, numOfBits):
+    # Divide the string into the binary and the excess bits
+    new_binary = normalized_binary[:numOfBits+1]
+    excess = normalized_binary[numOfBits+1:]
+
+    # obtain the G and R portion of GRS and place all the excess bits into a string
+    grs = ""
+
+    if len(excess) == 1:
+        grs = excess + "00"
+    elif len(excess) == 2:
+        grs = excess + "0"
+    elif len(excess) > 2:
+        grs = excess[:2]
+        excess = excess[2:]
+
+        # if excess has a 1, then add 1 to the grs, else add 0
+        excess = "1" if "1" in excess else "0"
+        grs += excess
+    else:
+        grs = "000"
+
+    return new_binary + grs
+
 def main():
     string_binary_input1 = get_binary_input()
     string_binary_input2 = get_binary_input()
