@@ -17,6 +17,9 @@ sum = 0         # Sum
 # Output Variables
 global initA
 global initB
+global initAexp
+global initBexp
+
 global step1A_OP    # Step 1
 global step1B_OP
 global step1A_OPexp
@@ -356,7 +359,8 @@ step5_Val.grid(row=11, column=2)
 # Output Text File Function
 def output_txtFile():
     with open("Output.txt", "w") as text_file:
-        text_file.write(f"{initA} + {initB}\n" + 
+        text_file.write(f"Initial Inputs: \t\t{initA} x 2^{initAexp}" + 
+                        f"\n\t\t\t\t\t\t{initB} x 2^{initBexp}" + 
                         f"\n\n Normalized Inputs: \t{step1A_OP} x 2^{step1A_OPexp}" + 
                         f"\n\t\t\t\t\t\t{step1B_OP} x 2^{step1B_OPexp}" + 
                         f"\n\n Rounded Inputs: \t\t{step2A_OP} x 2^{step2A_OPexp}" + 
@@ -435,10 +439,14 @@ def submit():
         # Store Initial Input 1
         global initA
         initA = input1
+        global initAexp
+        initAexp = exp1
         
         # Store Initial Input 2
         global initB
         initB = input2
+        global initBexp
+        initBexp = exp1
 
         # Step 1: Normalize Inputs
         input1, input2, exp1, exp2 = bin.match_inputs(input1, input2, int(exp1), int(exp2))
@@ -539,4 +547,3 @@ sbmtBtn.grid(row=4, column=2)
 
 # Start Window
 root.mainloop()
-
