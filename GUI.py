@@ -14,6 +14,28 @@ numBits = 0     # Number of Bits
 
 sum = 0         # Sum
 
+# Output Variables
+global initA
+global initB
+global step1A_OP    # Step 1
+global step1B_OP
+global step1A_OPexp
+global step1B_OPexp 
+
+global step2A_OP    # Step 2
+global step2B_OP
+global step2A_OPexp
+global step2B_OPexp 
+
+global step3_OP     # Step 3
+global step3_OPexp
+
+global step4_OP     # Step 5
+global step4_OPexp
+
+global final_OP     # Final Answer
+global final_OPexp   
+
 # Wrapping Label
 class WrapLabel(tk.Label):
     '''a type of Label that automatically adjusts the wrap to the size'''
@@ -331,6 +353,27 @@ step5_Val = WrapLabel(
 )
 step5_Val.grid(row=11, column=2)
 
+# Output Text File Function
+def output_txtFile():
+    with open("Output.txt", "w") as text_file:
+        text_file.write(f"{initA} + {initB}\n" + 
+                        f"\n\n Normalized Inputs: \t{step1A_OP} x 2^{step1A_OPexp}" + 
+                        f"\n\t\t\t\t\t\t{step1B_OP} x 2^{step1B_OPexp}" + 
+                        f"\n\n Rounded Inputs: \t\t{step2A_OP} x 2^{step2A_OPexp}" + 
+                        f"\n\t\t\t\t\t\t{step2B_OP} x 2^{step2B_OPexp}"+ 
+                        f"\n\n Initial Sum: \t\t\t{step3_OP} x 2^{step3_OPexp}"+ 
+                        f"\n\n Normalized Sum: \t\t{step4_OP} x 2^{step4_OPexp}"+ 
+                        f"\n\n Final Answer: \t\t\t{final_OP} x 2^{final_OPexp}"
+                        )
+
+# Output Text Button
+outputBtn = tk.Button(
+    inFrame,
+    text="Output to Text File",
+    font=("Times New Roman", 12),
+    command=output_txtFile   
+)
+
 # Submit Button Function
 def submit():
     # Reset Error Messages
@@ -389,6 +432,14 @@ def submit():
     
     # Perform Operation
     if(vScore == 5):
+        # Store Initial Input 1
+        global initA
+        initA = input1
+        
+        # Store Initial Input 2
+        global initB
+        initB = input2
+
         # Step 1: Normalize Inputs
         input1, input2, exp1, exp2 = bin.match_inputs(input1, input2, int(exp1), int(exp2))
         step1.config(text="Normalize Inputs: ")
@@ -396,6 +447,18 @@ def submit():
         str2 = "{val} x 2^{exp}".format(val = input2, exp = exp2)
         step1OpA.config(text=str1)
         step1OpB.config(text=str2)
+
+        # Store Rounded Inputs
+        global step1A_OP    
+        step1A_OP = input1
+        global step1B_OP    
+        step1B_OP = input2
+
+        # Store Rounded Exponents
+        global step1A_OPexp    
+        step1A_OPexp = exp1
+        global step1B_OPexp    
+        step1B_OPexp = exp2
 
         # Step 2: "Nearest Ties To Even", "Guard, Round, Sitcky Bits"
         if(clicked.get()=="Nearest Ties To Even"):
@@ -406,6 +469,7 @@ def submit():
             str2 = "{val} x 2^{exp}".format(val = input2, exp = exp2)
             step2OpA.config(text=str1)
             step2OpB.config(text=str2)
+
         else:            
             input1 = bin.transform_to_GRS(input1, int(numBits))
             input2 = bin.transform_to_GRS(input2, int(numBits))
@@ -413,23 +477,56 @@ def submit():
             str1 = "{val} x 2^{exp}".format(val = input1, exp = exp1)
             str2 = "{val} x 2^{exp}".format(val = input2, exp = exp2)
             step2OpA.config(text=str1)
-            step2OpB.config(text=str2)
+            step2OpB.config(text=str2)            
+
+        # Store Rounded Inputs
+        global step2A_OP    # Step 2
+        step2A_OP = input1
+        global step2B_OP    # Step 2
+        step2B_OP = input2
+
+        # Store Rounded Exponents
+        global step2A_OPexp    # Step 2
+        step2A_OPexp = exp1
+        global step2B_OPexp    # Step 2
+        step2B_OPexp = exp2
 
         # Step 3: Get Sum
         sum = bin.binary_addition(input1, input2)
         step3.config(text="Initial Sum: ")            
         step3_Val.config(text="{val} x 2^{exp}".format(val = sum, exp = exp1))
 
+        # Store Sum and Exponent
+        global step3_OP
+        step3_OP = sum
+        global step3_OPexp
+        step3_OPexp = exp1
+
         # Step 4: Normalize Sum
         normal, expf = bin.normalize_binary(sum, exp1)
         step4.config(text="Normalized Sum: ")
         step4_Val.config(text="{val} x 2^{exp}".format(val = normal, exp = expf))
+
+        # Store Normal and Exponent
+        global step4_OP
+        step4_OP = normal
+        global step4_OPexp
+        step4_OPexp = expf
 
         # Step 5: Round
         answer = bin.rounding(normal, int(numBits))
         if(answer.count('.')==2): answer = answer.replace('.', '', 1)
         step5.config(text="Final Answer: ")        
         step5_Val.config(text="{val} x 2^{exp}".format(val = answer, exp = expf))
+
+        # Store Normal and Exponent
+        global final_OP
+        final_OP = answer
+        global final_OPexp
+        final_OPexp = expf
+
+        # Place Button
+        outputBtn.grid(row=12, column=2)
 
 # Submit Button
 sbmtBtn = tk.Button(

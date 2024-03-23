@@ -238,12 +238,6 @@ def binary_subtraction(num1, num2):
     
     return result
 
-
-def output_to_text_file(final_answer, base):
-    with open("Output.txt", "w") as text_file:
-        text_file.write(f"{final_answer} {base}")
-
-
 def main():
     # string_binary_input1 = get_binary_input()
     # string_binary_input2 = get_binary_input()
