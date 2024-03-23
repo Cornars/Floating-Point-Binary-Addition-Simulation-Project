@@ -24,6 +24,8 @@ def normalize_binary(binary_str, base):
     # Find the position of the first '1' and radix
     first_one_index = binary_str.find("1")
     radix_index = binary_str.find(".")
+    if (first_one_index == -1):
+        first_one_index = 0
 
     if first_one_index == 0 and radix_index == 1:
         return binary_str, base
