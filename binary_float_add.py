@@ -1,4 +1,6 @@
 def validate_binary(binary):
+    if binary[0] == "-":
+        binary = binary[1:]
     parts = binary.split(".")
     if len(parts) > 2:
         return False
