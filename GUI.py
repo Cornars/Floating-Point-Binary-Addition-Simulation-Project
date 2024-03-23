@@ -37,7 +37,8 @@ global step4_OP     # Step 5
 global step4_OPexp
 
 global final_OP     # Final Answer
-global final_OPexp   
+global final_OPexp
+
 
 # Wrapping Label
 class WrapLabel(tk.Label):
@@ -231,6 +232,7 @@ clicked.set("Nearest Ties To Even")
 rndChoice = ttk.Combobox(
     inFrame, 
     width = 26, 
+    state = "readonly",
     textvariable=clicked
 )
 rndChoice['values'] = ["Nearest Ties To Even", "Guard, Round, Sitcky Bits"]
@@ -380,6 +382,13 @@ outputBtn = tk.Button(
 
 # Submit Button Function
 def submit():
+    global flag1 
+    flag1 = False
+    global flag2
+    flag2 = False
+    global outflag
+    outflag = False
+
     # Reset Error Messages
     opA_Warn.config(text="                              ") 
     opB_Warn.config(text="                              ") 
@@ -448,9 +457,18 @@ def submit():
         global initBexp
         initBexp = exp1
 
+        if input1[0] == '-':
+            flag1 = True
+            input1 = input1[1:]
+        if input2[0] == '-':
+            flag2 = True
+            input2 = input2[1:]
+
         # Step 1: Normalize Inputs
         input1, input2, exp1, exp2 = bin.match_inputs(input1, input2, int(exp1), int(exp2))
         step1.config(text="Normalize Inputs: ")
+        if flag1: input1 = "-" + input1
+        if flag2: input2 = "-" + input2
         str1 = "{val} x 2^{exp}".format(val = input1, exp = exp1)
         str2 = "{val} x 2^{exp}".format(val = input2, exp = exp2)
         step1OpA.config(text=str1)
@@ -468,10 +486,19 @@ def submit():
         global step1B_OPexp    
         step1B_OPexp = exp2
 
+        if input1[0] == '-':
+            flag1 = True
+            input1 = input1[1:]
+        if input2[0] == '-':
+            flag2 = True
+            input2 = input2[1:]
+
         # Step 2: "Nearest Ties To Even", "Guard, Round, Sitcky Bits"
         if(clicked.get()=="Nearest Ties To Even"):
             input1 = bin.rounding(input1, int(numBits))
             input2 = bin.rounding(input2, int(numBits))
+            if flag1: input1 = "-" + input1
+            if flag2: input2 = "-" + input2
             step2.config(text="Rounded Inputs: ")            
             str1 = "{val} x 2^{exp}".format(val = input1, exp = exp1)
             str2 = "{val} x 2^{exp}".format(val = input2, exp = exp2)
@@ -481,7 +508,9 @@ def submit():
         else:            
             input1 = bin.transform_to_GRS(input1, int(numBits))
             input2 = bin.transform_to_GRS(input2, int(numBits))
-            step2.config(text="GRS Inputs: ")            
+            step2.config(text="GRS Inputs: ")   
+            if flag1: input1 = "-" + input1
+            if flag2: input2 = "-" + input2         
             str1 = "{val} x 2^{exp}".format(val = input1, exp = exp1)
             str2 = "{val} x 2^{exp}".format(val = input2, exp = exp2)
             step2OpA.config(text=str1)
@@ -511,9 +540,15 @@ def submit():
         step3_OPexp = exp1
 
         # Step 4: Normalize Sum
+        if sum[0] == '-':
+            outflag = True
+            sum = sum[1:]
+
         normal, expf = bin.normalize_binary(sum, exp1)
         step4.config(text="Normalized Sum: ")
-        step4_Val.config(text="{val} x 2^{exp}".format(val = normal, exp = expf))
+        if outflag: normal = "-" + normal
+        str="{val} x 2^{exp}".format(val = normal, exp = expf)
+        step4_Val.config(text=str)
 
         # Store Normal and Exponent
         global step4_OP
@@ -521,11 +556,19 @@ def submit():
         global step4_OPexp
         step4_OPexp = expf
 
+        if normal[0] == '-':
+            outflag = True
+            normal = normal[1:]
+
         # Step 5: Round
         answer = bin.rounding(normal, int(numBits))
         if(answer.count('.')==2): answer = answer.replace('.', '', 1)
-        step5.config(text="Final Answer: ")        
-        step5_Val.config(text="{val} x 2^{exp}".format(val = answer, exp = expf))
+        step5.config(text="Final Answer: ") 
+        str="{val} x 2^{exp}".format(val = answer, exp = expf)  
+        if outflag: str = "-" + str
+        step5_Val.config(text=str)
+
+        if outflag: answer = "-" + answer
 
         # Store Normal and Exponent
         global final_OP

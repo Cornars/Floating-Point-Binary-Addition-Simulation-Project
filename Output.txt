@@ -1,1 +1,14 @@
-1.11101 -2
+Initial Inputs: 		-1.000 x 2^0
+						-1.000 x 2^0
+
+Normalized Inputs: 		-1.000 x 2^0
+						-1.000 x 2^0
+
+Rounded Inputs: 		-1.0 x 2^0
+						-1.0 x 2^0
+
+Initial Sum: 			-10.0 x 2^0
+
+Normalized Sum: 		-1.00 x 2^1
+
+Final Answer: 			-1.0 x 2^1
