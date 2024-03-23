@@ -150,27 +150,84 @@ def rounding(normalized_binary, numOfBits):
 
 
 def binary_addition(num1, num2):
+    # Handle negative numbers
+    num1_is_negative = num1.startswith('-')
+    num2_is_negative = num2.startswith('-')
+    
+    if num1_is_negative:
+        num1 = num1[1:]
+    if num2_is_negative:
+        num2 = num2[1:]
+    
     # Convert the numbers to lists of integers
-    int_part1, frac_part1 = num1.split(".")
-    int_part2, frac_part2 = num2.split(".")
-
-    int_part_sum = bin(int(int_part1, 2) + int(int_part2, 2))[2:]
-
+    int_part1, frac_part1 = num1.split('.')
+    int_part2, frac_part2 = num2.split('.')
+    
+    if num1_is_negative and not num2_is_negative:
+        return binary_subtraction(num2, num1)  # Subtract num1 from num2
+    elif not num1_is_negative and num2_is_negative:
+        return binary_subtraction(num1, num2)  # Subtract num2 from num1
+    
+    # Pad fractional parts with zeros if needed
     max_frac_length = max(len(frac_part1), len(frac_part2))
-    frac_part1 += "0" * (max_frac_length - len(frac_part1))
-    frac_part2 += "0" * (max_frac_length - len(frac_part2))
-
+    frac_part1 += '0' * (max_frac_length - len(frac_part1))
+    frac_part2 += '0' * (max_frac_length - len(frac_part2))
+    
+    int_part_sum = bin(int(int_part1, 2) + int(int_part2, 2))[2:]
+    
     carry = 0
-    frac_part_sum = ""
+    frac_part_sum = ''
     for i in range(max_frac_length - 1, -1, -1):
         bit_sum = int(frac_part1[i]) + int(frac_part2[i]) + carry
         frac_part_sum = str(bit_sum % 2) + frac_part_sum
         carry = bit_sum // 2
-
+    
     if carry:
         int_part_sum = bin(int(int_part_sum, 2) + 1)[2:]
+    
+    result = int_part_sum + '.' + frac_part_sum
 
-    result = int_part_sum + "." + frac_part_sum
+    if num1_is_negative and num2_is_negative:
+        result = '-' + result
+    
+    return result
+
+
+def binary_subtraction(num1, num2):
+    flag = False
+    if num1 < num2:
+        flag = True
+        num1, num2 = num2, num1
+
+    int_part1, frac_part1 = num1.split('.')
+    int_part2, frac_part2 = num2.split('.')
+    
+    # Pad fractional parts
+    max_frac_length = max(len(frac_part1), len(frac_part2))
+    frac_part1 += '0' * (max_frac_length - len(frac_part1))
+    frac_part2 += '0' * (max_frac_length - len(frac_part2))
+    
+    # Perform binary subtraction for fractional parts
+    borrow = 0
+    frac_part_diff = ''
+    for i in range(max_frac_length - 1, -1, -1):
+        bit_diff = int(frac_part1[i]) - int(frac_part2[i]) - borrow
+        if bit_diff < 0:
+            bit_diff += 2
+            borrow = 1
+        else:
+            borrow = 0
+        frac_part_diff = str(bit_diff) + frac_part_diff
+    
+    # Perform binary subtraction for integer parts
+    int_part_diff = bin(int(int_part1, 2) - int(int_part2, 2) - borrow)[2:]
+    
+    result = int_part_diff + '.' + frac_part_diff
+    
+    # Check if the result is negative
+    if flag:
+        result = '-' + result
+    
     return result
 
 
