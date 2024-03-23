@@ -101,52 +101,58 @@ def transform_to_GRS(normalized_binary, numOfBits):
 
 
 def rounding(normalized_binary, numOfBits):
-    new_binary = normalized_binary[: numOfBits + 1]
-    excess = normalized_binary[numOfBits + 1 :]
+    if (len(normalized_binary) == numOfBits+1):
+        return normalized_binary
+    elif (len(normalized_binary) <= numOfBits+1):
+        while(len(normalized_binary) <= numOfBits):
+            normalized_binary = normalized_binary + "0"
+        return normalized_binary
+    else:
+        new_binary = normalized_binary[: numOfBits + 1]
+        excess = normalized_binary[numOfBits + 1 :]
 
-    if excess[0] == "0":
-        return new_binary
-    elif excess[0] == "1" and ("1" in excess[1:] or len(excess) == 1):
-        new_binary_list = list(new_binary)
-        carry = 1
-
-        for i in range(len(new_binary_list) - 1, -1, -1):
-            if new_binary_list[i] == ".":
-                continue
-            sum_ = int(new_binary_list[i]) + carry
-            new_binary_list[i] = str(sum_ % 2)
-            carry = sum_ // 2
-
-        if carry:
-            new_binary_list.insert(0, "1")
-
-        new_binary = "".join(new_binary_list)
-
-        # Adjust the binary representation to maintain the same number of bits
-        if len(new_binary.split(".")[0]) > 1:
-            new_binary = new_binary[0] + "." + new_binary[1:]
-
-    elif excess[0] == "1" and all(bit == "0" for bit in excess[1:]):
-        new_binary_number = float(new_binary)
-        if int(new_binary_number) % 2 == 1:
-            last_bit_index = new_binary.rfind("1")
+        if excess[0] == "0":
+            return new_binary
+        elif excess[0] == "1" and ("1" in excess[1:] or len(excess) == 1):
             new_binary_list = list(new_binary)
             carry = 1
-            for i in range(last_bit_index, -1, -1):
+
+            for i in range(len(new_binary_list) - 1, -1, -1):
                 if new_binary_list[i] == ".":
                     continue
                 sum_ = int(new_binary_list[i]) + carry
                 new_binary_list[i] = str(sum_ % 2)
                 carry = sum_ // 2
+
             if carry:
                 new_binary_list.insert(0, "1")
+
             new_binary = "".join(new_binary_list)
 
-        # Adjust the binary representation to maintain the same number of bits
-        if len(new_binary.split(".")[0]) > 1:
-            new_binary = new_binary[0] + "." + new_binary[1:]
+            # Adjust the binary representation to maintain the same number of bits
+            if len(new_binary.split(".")[0]) > 1:
+                new_binary = new_binary[0] + "." + new_binary[1:]
 
-    return new_binary
+        elif excess[0] == "1" and all(bit == "0" for bit in excess[1:]):
+            new_binary_number = float(new_binary)
+            if int(new_binary_number) % 2 == 1:
+                last_bit_index = new_binary.rfind("1")
+                new_binary_list = list(new_binary)
+                carry = 1
+                for i in range(last_bit_index, -1, -1):
+                    if new_binary_list[i] == ".":
+                        continue
+                    sum_ = int(new_binary_list[i]) + carry
+                    new_binary_list[i] = str(sum_ % 2)
+                    carry = sum_ // 2
+                if carry:
+                    new_binary_list.insert(0, "1")
+                new_binary = "".join(new_binary_list)
+
+            # Adjust the binary representation to maintain the same number of bits
+            if len(new_binary.split(".")[0]) > 1:
+                new_binary = new_binary[0] + "." + new_binary[1:]
+        return new_binary
 
 
 def binary_addition(num1, num2):
