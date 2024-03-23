@@ -1,7 +1,7 @@
 # Floating-Point Binary Addition Simulation Project
 Please run the exe file found under the exe folder.
 
-# Group Members
+# Group Members - S13 Group1
 Bawa, Francis Isip
 
 Garcia, Aurelio Rodolfo
