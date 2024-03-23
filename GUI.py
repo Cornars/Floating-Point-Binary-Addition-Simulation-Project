@@ -361,13 +361,13 @@ def output_txtFile():
     with open("Output.txt", "w") as text_file:
         text_file.write(f"Initial Inputs: \t\t{initA} x 2^{initAexp}" + 
                         f"\n\t\t\t\t\t\t{initB} x 2^{initBexp}" + 
-                        f"\n\n Normalized Inputs: \t{step1A_OP} x 2^{step1A_OPexp}" + 
+                        f"\n\nNormalized Inputs: \t\t{step1A_OP} x 2^{step1A_OPexp}" + 
                         f"\n\t\t\t\t\t\t{step1B_OP} x 2^{step1B_OPexp}" + 
-                        f"\n\n Rounded Inputs: \t\t{step2A_OP} x 2^{step2A_OPexp}" + 
+                        f"\n\nRounded Inputs: \t\t{step2A_OP} x 2^{step2A_OPexp}" + 
                         f"\n\t\t\t\t\t\t{step2B_OP} x 2^{step2B_OPexp}"+ 
-                        f"\n\n Initial Sum: \t\t\t{step3_OP} x 2^{step3_OPexp}"+ 
-                        f"\n\n Normalized Sum: \t\t{step4_OP} x 2^{step4_OPexp}"+ 
-                        f"\n\n Final Answer: \t\t\t{final_OP} x 2^{final_OPexp}"
+                        f"\n\nInitial Sum: \t\t\t{step3_OP} x 2^{step3_OPexp}"+ 
+                        f"\n\nNormalized Sum: \t\t{step4_OP} x 2^{step4_OPexp}"+ 
+                        f"\n\nFinal Answer: \t\t\t{final_OP} x 2^{final_OPexp}"
                         )
 
 # Output Text Button
