@@ -3,9 +3,13 @@ Please run the exe file found under the exe folder.
 
 # Group Members
 Bawa, Francis Isip
+
 Garcia, Aurelio Rodolfo
+
 Gomez, Zachary Recomendable
+
 Roxas, Luis Gabriel
+
 Vicerra, Ricardo Luis
 
 # Demo
